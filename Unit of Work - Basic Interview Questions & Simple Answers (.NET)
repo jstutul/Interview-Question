@@ -1,0 +1,231 @@
+1. What is Unit of Work?
+Answer:
+Unit of Work is a design pattern that manages multiple database operations as a single transaction. If all operations succeed, it commits; otherwise, it rolls back.
+
+2. Why do we use Unit of Work?
+Answer:
+To ensure data consistency and save all changes together in one transaction.
+
+3. What problem does Unit of Work solve?
+Answer:
+It prevents partial data from being saved when one operation fails.
+
+Example:
+Add Order ✅
+Update Stock ❌
+
+Without Unit of Work:
+Order is saved.
+Stock is not updated.
+
+With Unit of Work:
+Nothing is saved.
+
+4. What is Repository Pattern?
+Answer:
+Repository Pattern provides a layer between the application and the database. It performs CRUD operations.
+
+5. What is the difference between Repository and Unit of Work?
+
+Answer:
+
+| Repository            | Unit of Work                     |
+| --------------------- | -------------------------------- |
+| Performs CRUD         | Manages transactions             |
+| Works with one entity | Works with multiple repositories |
+| Doesn't save changes  | Calls SaveChanges()              |
+
+
+6. Can Repository work without Unit of Work?
+Answer:
+Yes, but every repository may call SaveChanges() separately, creating multiple transactions.
+
+7. Can Unit of Work work without Repository?
+Answer:
+Yes. EF Core's DbContext itself acts as both Repository and Unit of Work.
+
+
+8. What are the benefits of Unit of Work?
+Answer:
+Data consistency
+Single transaction
+Better performance
+Easy rollback
+Cleaner code
+
+
+9. What is a transaction?
+Answer:
+A transaction is a group of database operations treated as one unit.
+
+10. What is Commit?
+Answer:
+Commit permanently saves all changes to the database.
+
+11. What is Rollback?
+Answer:
+Rollback cancels all changes if an error occurs.
+
+12. What happens if one operation fails?
+Answer:
+Unit of Work rolls back all changes.
+
+13. Why call SaveChanges() only once?
+Answer:
+Because it saves all pending changes together in one transaction.
+
+14. What does SaveChangesAsync() do?
+Answer:
+It saves all pending changes asynchronously.
+
+15. Does AddAsync() save data?
+Answer:
+No.
+It only adds the entity to EF Core's change tracker.
+Actual saving happens after:
+await _unitOfWork.SaveChangesAsync();
+
+16. Does Update() save data?
+Answer:
+No.
+It only marks the entity as modified.
+
+17. Does Remove() delete immediately?
+Answer:
+No.
+It marks the entity for deletion.
+Deletion occurs after SaveChanges().
+
+18. What is DbContext?
+Answer:
+DbContext is the main EF Core class used to communicate with the database.
+
+19. Is DbContext already a Unit of Work?
+Answer:
+Yes.
+DbContext already implements the Unit of Work pattern.
+
+20. Is DbSet a Repository?
+Answer:
+Yes.
+DbSet behaves like a Repository for an entity.
+
+21. Why create our own Unit of Work if DbContext already has one?
+
+Answer:
+To:
+
+Hide EF Core
+Improve testing
+Follow Clean Architecture
+Keep business logic independent
+
+22. What is Generic Repository?
+
+Answer:
+A repository that works for all entities using generics.
+
+Example:
+
+Repository<Product>
+Repository<User>
+Repository<Order>
+
+
+23. Why use Generic Repository?
+Answer:
+To avoid writing the same CRUD code repeatedly.
+
+24. What is IRepository<T>?
+Answer:
+It defines common CRUD methods for all entities.
+
+25. What is Repository<T>() in Unit of Work?
+Answer:
+It returns the repository for a specific entity.
+Example:
+var repository = _unitOfWork.Repository<Product>();
+
+26. Why use Dependency Injection with Unit of Work?
+
+Answer:
+To reduce coupling and make testing easier.
+
+27. Why register Unit of Work as Scoped?
+Answer:
+Because one HTTP request should use one DbContext.
+
+28. Why not Singleton?
+Answer:
+DbContext is not thread-safe.
+Singleton may cause data corruption.
+
+29. Why not Transient?
+Answer:
+Each injection creates a new DbContext.
+
+Changes won't be shared.
+
+30. Why use Async methods?
+Answer:
+To avoid blocking the application and improve scalability.
+
+31. What is BeginTransaction()?
+Answer:
+It starts a database transaction.
+
+32. What is CommitTransaction()?
+Answer:
+It commits all database changes permanently.
+
+33. What is RollbackTransaction()?
+Answer:
+It cancels all database changes if an error occurs.
+
+34. What is Dispose()?
+Answer:
+It releases database resources after use.
+
+35. What is DisposeAsync()?
+Answer:
+It releases resources asynchronously.
+
+36. Why use Try-Catch with Unit of Work?
+Answer:
+To rollback the transaction if an exception occurs.
+
+37. What happens if Commit is not called?
+Answer:
+The transaction is not completed and changes are not permanently saved.
+
+38. What happens if Rollback is not called after an error?
+Answer:
+The transaction may remain incomplete until it is disposed, leading to inconsistent behavior.
+
+39. What is the biggest advantage of Unit of Work?
+Answer:
+It keeps data consistent by saving multiple operations as one transaction.
+
+
+40. Give a real-life example.
+
+Answer:
+Bank Transfer
+    Deduct money from Account A
+    Add money to Account B
+
+If adding money fails:
+Without Unit of Work:
+  Money is deducted only.
+With Unit of Work:
+  Both operations are rolled back.
+
+
+Interviewer: Explain Unit of Work in one minute.
+
+Answer:
+
+"Unit of Work is a design pattern that manages multiple database operations as a single transaction. 
+It ensures that either all operations succeed and are committed, or if any operation fails, everything is rolled back.
+In ASP.NET Core with EF Core, DbContext already implements the Unit of Work pattern, but we often create our own Unit of Work to follow Clean Architecture,
+improve testability, and coordinate multiple repositories through a single SaveChanges call."
