@@ -1,0 +1,161 @@
+######
+Dependency Injection হলো এমন একটি Design Pattern যেখানে একটি Class তার প্রয়োজনীয় Object নিজে তৈরি না করে, বাইরের Container থেকে পায়।
+######
+Dependency Injection হলো এমন একটি Design Pattern যেখানে একটি Class তার Dependency নিজে Create না করে, ASP.NET Core-এর DI Container থেকে Receive করে। এর ফলে Loose Coupling, সহজ Testing এবং Maintainability বৃদ্ধি পায়।
+
+DI-এর সুবিধা
+✅ Loose Coupling
+✅ Easy Testing
+✅ Better Maintainability
+✅ Reusable Code
+
+
+It looks like you're asking about the difference between Singleton, Scoped, and Transient lifetimes in ASP.NET Core Dependency Injection.
+Dependency Injection Lifetimes
+| Lifetime      | Created                         | Shared                    | Use Case                        |
+| ------------- | ------------------------------- | ------------------------- | ------------------------------- |
+| **Transient** | Every time it's requested       | ❌ No                      | Lightweight, stateless services |
+| **Scoped**    | Once per HTTP request           | ✅ Within the same request | Database access, Unit of Work   |
+| **Singleton** | Once for the entire application | ✅ Across all requests     | Configuration, caching, logging |
+
+1. Transient
+A new instance is created every time the service is requested.
+
+builder.Services.AddTransient<IEmailService, EmailService>();
+Example
+
+public class EmailService
+{
+    public Guid Id { get; } = Guid.NewGuid();
+}
+
+If injected twice:
+
+var s1 = emailService1.Id;
+var s2 = emailService2.Id;
+
+Output:
+
+s1 = A123
+s2 = B456
+
+Different objects every time.
+
+Use when
+Email service
+PDF generator
+Validation service
+Helper classes
+
+
+2. Scoped
+One instance is created per HTTP request.
+
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+During one request:
+
+Controller
+    ↓
+Repository
+    ↓
+Service
+
+All receive the same object.
+
+Request 1
+
+Repository = 123
+Service = 123
+
+Request 2
+
+Repository = 789
+Service = 789
+Use when
+DbContext
+Repository Pattern
+Unit of Work
+Business services
+
+Entity Framework DbContext should always be Scoped.
+
+3. Singleton
+
+Created only once when the application starts.
+
+builder.Services.AddSingleton<ICacheService, CacheService>();
+
+Every request uses the same object.
+
+Request 1
+
+CacheService = 999
+
+Request 2
+
+CacheService = 999
+
+Request 100
+
+CacheService = 999
+
+Always the same instance.
+
+Use when
+Memory cache
+Configuration
+Logging
+Application settings
+Visual Example
+Application Starts
+        │
+        ▼
+Singleton
+   │
+   ├── Request 1
+   │      ├── Scoped
+   │      │      ├── Transient
+   │      │      └── Transient
+   │
+   ├── Request 2
+   │      ├── Scoped
+   │      │      ├── Transient
+   │      │      └── Transient
+Real Project Example
+builder.Services.AddDbContext<AppDbContext>();        // Scoped
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductService, ProductService>();
+
+builder.Services.AddTransient<IEmailService, EmailService>();
+builder.Services.AddTransient<IPdfGenerator, PdfGenerator>();
+
+builder.Services.AddSingleton<IMemoryCache, MemoryCache>();
+builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+Interview Questions
+Q1. What is Dependency Injection?
+
+Answer:
+Dependency Injection (DI) is a design pattern where objects receive their dependencies from an external container instead of creating them themselves. It improves loose coupling, testability, and maintainability.
+
+Q2. What are the three service lifetimes in ASP.NET Core?
+Transient – New instance every time requested.
+Scoped – One instance per HTTP request.
+Singleton – One instance for the application's lifetime.
+Q3. Which lifetime should DbContext use?
+
+Answer: Scoped.
+
+Q4. Can a Singleton depend on a Scoped service?
+
+Answer: No. A Singleton lives for the entire application, while a Scoped service is created per request. Injecting a Scoped service into a Singleton can cause incorrect behavior and ASP.NET Core will typically throw an exception.
+
+Q5. When would you use Transient?
+
+Answer: For lightweight, stateless services such as email sending, validation, or helper classes.
+
+Quick Memory Trick
+Transient = T → Time requested = New object every time
+Scoped = S → Single instance per HTTP request
+Singleton = S → Same instance for the entire application
