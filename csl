@@ -1,0 +1,19 @@
+hey may ask:
+
+What is ERP?
+Answer:
+ERP (Enterprise Resource Planning) is an integrated software system that manages all departments of a business in one centralized database. 
+  It allows departments like HR, Inventory, Sales, Accounts, Production, and Purchase to work together efficiently.
+
+Have you worked on HR software?
+Even if you haven't:
+I haven't worked on a complete HRMS, but I understand concepts like employee management, attendance, leave management, payroll, and role-based authorization.
+
+Have you developed APIs consumed by mobile applications?
+Answer:
+Yes. REST APIs can be consumed by web applications, mobile applications, and third-party systems. I have developed JWT-secured APIs that can be used by different clients.
+
+
+How would you display real-time production data?
+Good answer:
+I would use SignalR or WebSocket technology for real-time updates. If real-time communication isn't required, periodic API polling can also be used.
