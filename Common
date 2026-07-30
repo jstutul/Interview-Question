@@ -1,0 +1,115 @@
+.NET Developer Verbal Interview Preparation
+
+1.  Tell me about yourself. Sample: My name is Jafor Sadik Tutul. I am a
+    Software Engineer with over 4 years of experience developing web
+    applications using ASP.NET Core, C#, Entity Framework Core, SQL
+    Server, and REST APIs. I have experience with layered architecture,
+    JWT authentication, Repository and Unit of Work patterns, and
+    responsive front-end development. Recently I’ve also been learning
+    React.
+
+2.  Explain your current project. Mention:
+
+-   Project name
+-   Purpose
+-   Technologies
+-   Your responsibilities
+
+3.  Layered Architecture Presentation -> API -> Business/Manager ->
+    Repository/Data Access -> Database Benefits:
+
+-   Easy maintenance
+-   Loose coupling
+-   Better testing
+-   Reusability
+
+4.  Repository Pattern Abstracts database CRUD operations into
+    repositories.
+
+5.  Unit of Work Coordinates multiple repositories with one DbContext
+    and SaveChanges().
+
+6.  Repository vs Unit of Work Repository = CRUD Unit of Work =
+    Transaction + SaveChanges()
+
+7.  Dependency Injection Provides dependencies from outside the class.
+    Benefits:
+
+-   Loose coupling
+-   Easier testing
+
+8.  REST API GET = Read POST = Create PUT = Update DELETE = Delete PATCH
+    = Partial Update
+
+9.  PUT vs PATCH PUT updates the whole object. PATCH updates selected
+    fields.
+
+10. JWT Authentication Header + Payload + Signature Login -> Validate ->
+    Generate Token -> Client sends token -> Server validates.
+
+11. Entity Framework Core ORM with LINQ, Change Tracking, Migrations.
+
+12. Database First vs Code First Database First: Existing DB generates
+    models. Code First: Models generate database.
+
+13. LINQ Query data using C#.
+
+14. IQueryable vs IEnumerable IQueryable executes in SQL. IEnumerable
+    executes in memory.
+
+15. Know: First() FirstOrDefault() Single()
+
+16. SQL Topics DELETE vs TRUNCATE vs DROP JOINs GROUP BY HAVING
+    ROW_NUMBER CTE Stored Procedure View Function Trigger Indexes
+
+17. Normalization 1NF 2NF 3NF
+
+18. SQL Optimization
+
+-   Indexes
+-   Avoid SELECT *
+-   Proper JOINs
+-   Execution Plans
+-   Pagination
+
+19. async/await Non-blocking asynchronous programming.
+
+20. Task vs Thread Task = High-level abstraction. Thread = OS thread.
+
+21. SOLID S - Single Responsibility O - Open Closed L - Liskov I -
+    Interface Segregation D - Dependency Inversion
+
+22. React Basics Components Props State Hooks React Router Axios
+
+23. React vs Angular React = Library Angular = Full Framework
+
+24. CORS Allows cross-origin API requests.
+
+25. HTTP Status Codes 200 OK 201 Created 400 Bad Request 401
+    Unauthorized 403 Forbidden 404 Not Found 500 Server Error
+
+26. Git Workflow Clone Branch Commit Push Pull Request Merge
+
+27. Difficult Problem Solved Prepare one real example from your work.
+
+28. Why do you want to join? Mention learning, modern stack,
+    contribution, growth.
+
+29. Why should we hire you? Highlight .NET, EF Core, SQL Server, REST
+    API, teamwork, learning ability.
+
+30. HR Questions
+
+-   Strengths
+-   Weaknesses
+-   Why leaving current company
+-   Five-year goal
+-   Salary expectation
+-   Working under pressure
+
+Questions to Ask Interviewer - What projects will I work on? - How is
+the team structured? - Code review process? - Learning opportunities?
+
+Interview Tips - Speak confidently. - Use simple examples. - If unsure,
+admit it and explain how you’d learn. - Focus on projects you’ve
+personally built.
